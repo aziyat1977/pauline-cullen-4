@@ -1,8 +1,176 @@
-
 import React from 'react';
-import { QuizQuestion, LessonSection } from './types';
+import { QuizQuestion, LessonSection, IELTSTask } from './types';
 
-// Helper to create simple text slides
+// --- AUTHENTIC IELTS TASKS DATA ---
+
+export const IELTS_TASKS: IELTSTask[] = [
+  {
+    id: 'task-1-line-spreads',
+    type: 'line',
+    title: 'Consumption of Spreads',
+    prompt: 'The graph shows the consumption of three types of spreads (Margarine, Low Fat, Butter) between 1981 and 2007.',
+    config: { unit: 'Grams' },
+    data: [
+      { name: '1981', Butter: 140, Margarine: 90, 'Low Fat': 10 },
+      { name: '1986', Butter: 110, Margarine: 95, 'Low Fat': 25 },
+      { name: '1991', Butter: 75, Margarine: 100, 'Low Fat': 40 },
+      { name: '1996', Butter: 50, Margarine: 60, 'Low Fat': 75 },
+      { name: '2001', Butter: 45, Margarine: 40, 'Low Fat': 80 },
+      { name: '2007', Butter: 40, Margarine: 35, 'Low Fat': 70 },
+    ]
+  },
+  {
+    id: 'task-2-bar-transport',
+    type: 'bar',
+    title: 'Modes of Transport to Work',
+    prompt: 'The chart shows the percentage of people using different modes of transport in a European city in 1960, 1980, and 2000.',
+    data: [
+      { name: 'Car', '1960': 5, '1980': 25, '2000': 50 },
+      { name: 'Bus', '1960': 40, '1980': 20, '2000': 15 },
+      { name: 'Bike', '1960': 35, '1980': 30, '2000': 10 },
+      { name: 'Walk', '1960': 20, '1980': 25, '2000': 25 },
+    ]
+  },
+  {
+    id: 'task-3-pie-energy',
+    type: 'pie',
+    title: 'Energy Production by Fuel',
+    prompt: 'The pie chart illustrates the breakdown of electricity generation by fuel source in France in 2020.',
+    data: [
+      { name: 'Nuclear', value: 67 },
+      { name: 'Renewables', value: 24 },
+      { name: 'Fossil Fuels', value: 9 },
+    ]
+  },
+  {
+    id: 'task-4-mixed-climate',
+    type: 'mixed',
+    title: 'Climate Data',
+    prompt: 'The graph shows average rainfall and temperature for a tropical city over a year.',
+    data: [
+      { name: 'Jan', rain: 300, temp: 28 },
+      { name: 'Feb', rain: 280, temp: 28 },
+      { name: 'Mar', rain: 200, temp: 29 },
+      { name: 'Apr', rain: 150, temp: 30 },
+      { name: 'May', rain: 100, temp: 31 },
+      { name: 'Jun', rain: 50, temp: 30 },
+      { name: 'Jul', rain: 20, temp: 29 },
+      { name: 'Aug', rain: 20, temp: 29 },
+      { name: 'Sep', rain: 60, temp: 29 },
+      { name: 'Oct', rain: 150, temp: 28 },
+      { name: 'Nov', rain: 250, temp: 27 },
+      { name: 'Dec', rain: 320, temp: 27 },
+    ]
+  },
+  {
+    id: 'task-5-table-subway',
+    type: 'table',
+    title: 'Underground Railways',
+    prompt: 'The table below gives information about the underground railway systems in six cities.',
+    data: [
+      { name: 'London', Opened: 1863, KM: 394, Passengers: 775 },
+      { name: 'Paris', Opened: 1900, KM: 199, Passengers: 1191 },
+      { name: 'Tokyo', Opened: 1927, KM: 155, Passengers: 1927 },
+      { name: 'Washington', Opened: 1976, KM: 126, Passengers: 144 },
+      { name: 'Kyoto', Opened: 1981, KM: 11, Passengers: 45 },
+      { name: 'Los Angeles', Opened: 2001, KM: 28, Passengers: 50 },
+    ]
+  },
+  {
+    id: 'task-6-map-island',
+    type: 'map',
+    title: 'Island Development',
+    prompt: 'The maps show an island before and after the construction of tourist facilities.',
+    data: [
+      {
+        year: 'Before',
+        features: [
+          { id: '1', x: 20, y: 30, type: 'nature', label: 'Palm Trees' },
+          { id: '2', x: 80, y: 30, type: 'nature', label: 'Palm Trees' },
+          { id: '3', x: 50, y: 50, type: 'nature', label: 'Beach' },
+        ]
+      },
+      {
+        year: 'After',
+        features: [
+          { id: '1', x: 20, y: 20, type: 'building', label: 'Hotel Complex' },
+          { id: '2', x: 80, y: 30, type: 'building', label: 'Huts' },
+          { id: '3', x: 50, y: 60, type: 'road', label: 'Pier' },
+          { id: '4', x: 50, y: 40, type: 'building', label: 'Restaurant' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'task-7-process-salmon',
+    type: 'process',
+    title: 'Life Cycle of a Salmon',
+    prompt: 'The diagram shows the life cycle of the salmon species.',
+    data: [
+      { step: 1, label: 'Eggs', description: 'Laid in upper river (slow moving)' },
+      { step: 2, label: 'Fry', description: 'Small fish (3-8 cm) live in lower river' },
+      { step: 3, label: 'Smolt', description: 'Migrate to open sea (12-15 cm)' },
+      { step: 4, label: 'Adult', description: 'Grow to full size (70-76 cm) in ocean' },
+      { step: 5, label: 'Spawning', description: 'Return to river to lay eggs' },
+    ]
+  },
+  {
+    id: 'task-8-process-brick',
+    type: 'process',
+    title: 'Brick Manufacturing',
+    prompt: 'The process by which bricks are manufactured for the building industry.',
+    data: [
+      { step: 1, label: 'Excavation', description: 'Clay dug by digger' },
+      { step: 2, label: 'Sifting', description: 'Metal grid separates rocks' },
+      { step: 3, label: 'Moulding', description: 'Clay mixed with sand + water' },
+      { step: 4, label: 'Drying', description: 'Oven for 24-48 hours' },
+      { step: 5, label: 'Firing', description: 'Kiln (200C - 1300C)' },
+      { step: 6, label: 'Packaging', description: 'Delivery to site' },
+    ]
+  },
+  {
+    id: 'task-9-map-village',
+    type: 'map',
+    title: 'Village Change',
+    prompt: 'The village of Chorleywood in 1995 and 2010.',
+    data: [
+      {
+        year: '1995',
+        features: [
+          { id: '1', x: 30, y: 30, type: 'nature', label: 'Farmland' },
+          { id: '2', x: 70, y: 30, type: 'nature', label: 'Forest' },
+          { id: '3', x: 50, y: 50, type: 'building', label: 'Small Shops' },
+        ]
+      },
+      {
+        year: '2010',
+        features: [
+          { id: '1', x: 30, y: 30, type: 'building', label: 'Golf Course' },
+          { id: '2', x: 70, y: 30, type: 'nature', label: 'Park' },
+          { id: '3', x: 50, y: 50, type: 'building', label: 'Supermarket' },
+          { id: '4', x: 50, y: 70, type: 'road', label: 'Car Park' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'task-10-process-hydro',
+    type: 'process',
+    title: 'Hydroelectric Power',
+    prompt: 'How electricity is generated in a hydroelectric power station.',
+    data: [
+      { step: 1, label: 'Reservoir', description: 'Water stored behind dam' },
+      { step: 2, label: 'Intake', description: 'Valve opens during day' },
+      { step: 3, label: 'Flow', description: 'Water flows down penstock' },
+      { step: 4, label: 'Turbine', description: 'Water spins the turbine' },
+      { step: 5, label: 'Generator', description: 'Creates electricity' },
+      { step: 6, label: 'Grid', description: 'Power lines to city' },
+    ]
+  }
+];
+
+// --- LESSON DATA ---
+
 const textSlide = (...lines: string[]) => ({
   type: 'text' as const,
   content: lines.filter(l => l !== "")
@@ -10,185 +178,80 @@ const textSlide = (...lines: string[]) => ({
 
 export const LESSON_DATA: LessonSection[] = [
   {
-    title: "The Intro Sentence",
+    title: "Intro: Line Graphs",
     slides: [
-      textSlide("In Task 1, speed is everything.", "The intro is your first impression.", "Don't let it waste your time."),
-      textSlide("What is an intro sentence?", "It explains what we are looking at.", "It answers: What? Who? Where? When?"),
-      textSlide("Crucially...", "This is NOT your overview.", "It is just the starting label."),
-      textSlide("Example Question:", "The table shows coffee sales...", "...in five European countries."),
-      textSlide("We must paraphrase this.", "Identify the 'What': Sales of coffee.", "Identify the 'Where': Europe."),
+      textSlide("Let's look at a classic IELTS Task 1: The 'Consumption of Spreads'.", "Notice the time period (1981-2007) and the units (grams).", "What is the most striking feature?"),
       {
         type: 'exercise',
+        visualTask: IELTS_TASKS[0], // Spreads line graph
         exercise: {
-          id: 'ex-warmup-1',
+          id: 'ex-line-overview',
           type: 'multiple-choice',
-          question: 'What does the introductory sentence answers?',
-          options: ['The main trends', 'What, Who, Where, When', 'The conclusion'],
-          answer: 'What, Who, Where, When',
-          explanation: "It strictly defines the parameters of the chart."
-        }
-      }
-    ]
-  },
-  {
-    title: "Paraphrasing Zen",
-    slides: [
-      textSlide("Do not copy the prompt.", "If you copy, you lose points.", "Change the structure naturally."),
-      textSlide("The verb 'Show'", "It is okay to use 'show'.", "Don't force fancy synonyms."),
-      textSlide("Avoid these words:", "'Display' (visuals only).", "'Present' (giving a gift)."),
-      textSlide("Use these instead:", "'Illustrate'", "'Compare'", "'Give data on'"),
-      textSlide("Grammar Magic", "Use relative clauses.", "Combine your facts."),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'ex-para-1',
-          type: 'gap-fill',
-          question: 'The chart ____ the number of cars.',
-          options: ['displays', 'illustrates', 'presents'],
-          answer: 'illustrates',
-          explanation: "'Illustrates' is the most accurate synonym for 'shows' in this context."
-        }
-      }
-    ]
-  },
-  {
-    title: "Preposition Mastery",
-    slides: [
-      textSlide("Time and Place rules.", "Small words matter.", "Let's master them."),
-      textSlide("Specific Years", "Use 'in'.", "Example: 'In 1999'."),
-      textSlide("Ranges", "Use 'from... to...'", "Example: 'From 1990 to 2000'."),
-      textSlide("Durations", "Use 'during' or 'over'.", "Example: 'Over a ten-year period'."),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'ex-prep-intro',
-          type: 'gap-fill',
-          question: 'Sales increased ____ 2005.',
-          options: ['on', 'in', 'at'],
-          answer: 'in',
-          explanation: "Use 'in' for specific years."
-        }
-      }
-    ]
-  },
-  {
-    title: "Case Study: Line Graph",
-    slides: [
-      textSlide("Topic: Fast Food in Australia", "Data: Pizza vs Fish & Chips.", "Period: 1975 to 2000."),
-      textSlide("The Trend", "Pizza: 10 times increase.", "Fish & Chips: Gradual decline."),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-line-1',
-          type: 'multiple-choice',
-          question: 'Pizza consumption ____ from 1975 to 2000.',
-          options: ['remained stable', 'skyrocketed', 'dipped'],
-          answer: 'skyrocketed',
-          explanation: "It went from very low to the highest category."
+          question: 'What is the main trend for Butter?',
+          options: ['It fluctuated wildly', 'It declined significantly', 'It remained stable'],
+          answer: 'It declined significantly',
+          explanation: "Looking at the purple line, it drops from 140g to roughly 40g."
         }
       },
-      textSlide("Sentence Structure", "Use 'while' to compare.", "'Pizza rose, while Fish & Chips fell.'"),
+      textSlide("Writing the Overview", "For this graph, the overview should mention:", "1. The decline of Butter and Margarine.", "2. The rise of Low Fat spreads."),
       {
         type: 'exercise',
+        visualTask: IELTS_TASKS[0],
         exercise: {
-          id: 'cs-line-2',
+          id: 'ex-line-gap',
           type: 'gap-fill',
-          question: 'Fish and chips consumption ____ declined.',
-          options: ['gradually', 'sharply', 'quickly'],
-          answer: 'gradually',
-          explanation: "The line goes down slowly over 25 years."
+          question: 'Overall, the consumption of butter and margarine ____, while low fat spreads became more popular.',
+          options: ['increased', 'decreased', 'stabilized'],
+          answer: 'decreased',
+          explanation: "Both major traditional spreads went down."
+        }
+      }
+    ]
+  },
+  {
+    title: "Process: Life Cycles",
+    slides: [
+      textSlide("Process diagrams require 'Sequencers'.", "First, Next, Then, Finally.", "Let's look at the Salmon Life Cycle."),
+      {
+        type: 'exercise',
+        visualTask: IELTS_TASKS[6], // Salmon
+        exercise: {
+          id: 'ex-proc-salmon-1',
+          type: 'gap-fill',
+          question: 'First, the salmon eggs are ____ in the upper river.',
+          options: ['layed', 'laid', 'lied'],
+          answer: 'laid',
+          explanation: "Passive voice of 'lay' is 'laid'."
         }
       },
       {
         type: 'exercise',
+        visualTask: IELTS_TASKS[6],
         exercise: {
-          id: 'cs-line-3',
-          type: 'gap-fill',
-          question: 'In 1975, pizza was the ____ popular option.',
-          options: ['least', 'most', 'best'],
-          answer: 'least',
-          explanation: "It started at nearly zero."
+          id: 'ex-proc-salmon-2',
+          type: 'multiple-choice',
+          question: 'What happens after the "Fry" stage?',
+          options: ['They become Smolts', 'They spawn immediately', 'They die'],
+          answer: 'They become Smolts',
+          explanation: "Step 3 in the diagram is the Smolt stage."
         }
       }
     ]
   },
   {
-    title: "Case Study: Maps",
+    title: "Maps: Before & After",
     slides: [
-      textSlide("Topic: Isola Village Development", "Map 1: 2010 (Nature).", "Map 2: Present (Tourist Resort)."),
-      textSlide("Vocabulary of Change", "Trees: 'Chopped down' or 'Cleared'.", "Buildings: 'Constructed' or 'Built'."),
+      textSlide("Map tasks often show development.", "You need specific vocabulary:", "Constructed, Replaced, Extended, Removed."),
       {
         type: 'exercise',
+        visualTask: IELTS_TASKS[5], // Island
         exercise: {
-          id: 'cs-map-1',
+          id: 'ex-map-island',
           type: 'matching',
-          question: 'Synonym for "Knocked down"',
-          answer: 'Demolished',
-          options: ['Demolished', 'Created', 'Renovated']
-        }
-      },
-      textSlide("Passive Voice is Key", "We don't know who built it.", "'New houses were constructed.'"),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-map-2',
-          type: 'gap-fill',
-          question: 'The school ____ extended to add 2 rooms.',
-          options: ['was', 'were', 'had'],
-          answer: 'was',
-          explanation: "Passive voice: singular subject 'school'."
-        }
-      },
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-map-3',
-          type: 'multiple-choice',
-          question: 'The woodland was ____ into a golf course.',
-          options: ['converted', 'replaced', 'swapped'],
-          answer: 'converted',
-          explanation: "Converted implies a change of function."
-        }
-      }
-    ]
-  },
-  {
-    title: "Case Study: Process",
-    slides: [
-      textSlide("Topic: Brick Manufacturing", "Input: Raw Clay.", "Output: Finished Bricks."),
-      textSlide("The Stages", "1. Digging -> 2. Sifting", "3. Moulding -> 4. Firing."),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-proc-1',
-          type: 'gap-fill',
-          question: 'First, the clay is ____ using a digger.',
-          options: ['excavated', 'found', 'seen'],
-          answer: 'excavated',
-          explanation: "Excavated is the precise technical term for digging."
-        }
-      },
-      textSlide("Sequencers", "Don't just say 'and then'.", "Use: 'Following this', 'Subsequently'."),
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-proc-2',
-          type: 'multiple-choice',
-          question: '____, the bricks are placed in a kiln.',
-          options: ['Next', 'First', 'While'],
-          answer: 'Next',
-          explanation: "A simple sequencer for the middle of a process."
-        }
-      },
-      {
-        type: 'exercise',
-        exercise: {
-          id: 'cs-proc-3',
-          type: 'gap-fill',
-          question: 'The bricks ____ cooled for 48 hours.',
-          options: ['are', 'is', 'be'],
-          answer: 'are',
-          explanation: "Plural subject 'bricks' requires 'are'."
+          question: 'What happened to the Palm Trees in the center?',
+          options: ['They were chopped down', 'They were planted', 'They remained'],
+          answer: 'They were chopped down',
+          explanation: "In the 'After' map, the central trees are replaced by buildings."
         }
       }
     ]
@@ -198,52 +261,21 @@ export const LESSON_DATA: LessonSection[] = [
 export const QUIZ_DATA: QuizQuestion[] = [
   {
     id: 1,
-    question: "What is the main purpose of the introductory sentence?",
-    options: ["To give an overview of trends", "To explain what the chart shows", "To list all the data points", "To give your opinion"],
-    correctIndex: 1
+    question: "In a line graph, if a line goes up and down many times, it...",
+    options: ["Fluctuates", "Plummets", "Plateaus", "Soars"],
+    correctIndex: 0
   },
   {
     id: 2,
-    question: "Which word is a safe synonym for 'shows'?",
-    options: ["Demonstrates", "Illustrates", "Reflects", "Proves"],
-    correctIndex: 1
-  },
-  {
-    id: 3,
-    question: "How do we paraphrase 'in 1999 and 2004'?",
-    options: ["in two separate years", "between 1999 and 2004", "since 1999", "before 2004"],
+    question: "For a process diagram, which tense is essential?",
+    options: ["Passive Voice", "Past Continuous", "Future Perfect", "Conditionals"],
     correctIndex: 0
-  },
-  {
-    id: 4,
-    question: "Which preposition is used for a duration? '___ a ten year period'",
-    options: ["In", "At", "Over", "Since"],
-    correctIndex: 2
-  },
-  {
-    id: 5,
-    question: "In a Map task, if a building is removed, we say it was...",
-    options: ["Demolished", "Broken", "Deleted", "Erased"],
-    correctIndex: 0
-  },
-  {
-    id: 6,
-    question: "For a Process diagram, which tense is most common?",
-    options: ["Past Simple", "Present Passive", "Future Perfect", "Present Continuous"],
-    correctIndex: 1
   }
 ];
 
-// Mock data for charts
-export const CHART_DATA_BAR = [
-  { name: '1980', coffee: 40, bananas: 24 },
-  { name: '1990', coffee: 30, bananas: 13 },
-  { name: '2000', coffee: 20, bananas: 58 },
-];
-
 export const CHART_DATA_PIE = [
-  { name: 'Rent', value: 400 },
-  { name: 'Food', value: 300 },
-  { name: 'Travel', value: 300 },
-  { name: 'Fun', value: 200 },
+  { name: 'Housing', value: 40 },
+  { name: 'Food', value: 30 },
+  { name: 'Transport', value: 20 },
+  { name: 'Entertainment', value: 10 },
 ];
