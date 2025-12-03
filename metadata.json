@@ -1,0 +1,7 @@
+{
+  "name": "Pauline Cullen Task 1 - unit 4",
+  "description": "A calm, self-paced IELTS preparation platform designed specifically for introverted learners. Features AI-powered speaking practice, gamified quizzes, and stress-free simulations.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
